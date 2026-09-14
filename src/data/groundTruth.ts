@@ -162,7 +162,7 @@ export const COMPANY_FACTS: CompanyFact[] = [
     key: 'languages',
     label: 'Ngôn ngữ website',
     value: 'Tiếng Anh, Tiếng Việt, Tiếng Hàn, Tiếng Nhật.',
-    quote: 'What languages is the MyStorage website available in? A: English, Vietnamese, Korean, and Japanese.',
+    quote: 'Q: What languages is the MyStorage website available in?\nA: English, Vietnamese, Korean, and Japanese.',
   },
   {
     key: 'booking',
@@ -194,5 +194,5 @@ export const WINE_STORAGE = {
   tempHigh: 15,
   humidityLow: 60,
   humidityHigh: 70,
-  quote: 'Wine Storage: Climate-controlled at 12–15°C and 60–70% humidity, 24/7 access.',
+  quote: 'Climate-controlled at 12–15°C and 60–70% humidity, 24/7 access.',
 }
