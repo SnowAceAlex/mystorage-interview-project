@@ -1,25 +1,14 @@
-import type { ReactNode } from 'react'
+import AskPanel from './components/AskPanel'
+import EvalRunner from './components/EvalRunner'
 import EvalPanel from './components/EvalPanel'
 import PricingFactCard from './components/PricingFactCard'
 import ProtectionPlanCard from './components/ProtectionPlanCard'
+import { Bubble, ColumnLabel } from './components/Chat'
 import { AUDIT_TRANSCRIPT } from './data/transcript'
 import { SOURCE } from './data/groundTruth'
 import { airConditionedQuotes } from './lib/factCheck'
 
 const lowestAcQuote = airConditionedQuotes(AUDIT_TRANSCRIPT)[0] ?? 0
-
-function Bubble({ role, children }: { role: 'user' | 'assistant'; children: ReactNode }) {
-  return <div className={role === 'user' ? 'bubble user' : 'bubble'}>{children}</div>
-}
-
-function ColumnLabel({ tone, children }: { tone: 'bad' | 'good'; children: ReactNode }) {
-  return (
-    <div className="column-label">
-      <span className={tone === 'good' ? 'dot good' : 'dot'} />
-      {children}
-    </div>
-  )
-}
 
 export default function App() {
   return (
@@ -58,6 +47,9 @@ export default function App() {
           </p>
         </div>
       </section>
+
+      <AskPanel />
+      <EvalRunner />
 
       <section className="section">
         <div className="section-head">
