@@ -63,3 +63,24 @@ test('mustDecline fails when a price is invented alongside the decline', () => {
   assert.equal(result.passed, false)
   assert.equal(result.contradictions.length, 1)
 })
+
+test('mustDecline passes on "không nhận" phrasing, which the grounded facts block itself uses', () => {
+  const result = grade('Dạ MyStorage không nhận lưu trữ ô tô ạ.', {
+    id: 'x',
+    question: 'q',
+    mustDecline: true,
+  })
+  assert.equal(result.passed, true)
+})
+
+test('does not flag a distractor as a contradiction when the required amount was also correctly stated', () => {
+  const result = grade('Kho máy lạnh từ 559.000 VNĐ/tháng; gửi hành lý 54.000 VNĐ/giờ.', {
+    id: 'x',
+    question: 'q',
+    requiredAmounts: [559_000],
+    amountKind: 'price',
+  })
+  assert.equal(result.passed, true)
+  assert.deepEqual(result.missing, [])
+  assert.deepEqual(result.contradictions, [])
+})

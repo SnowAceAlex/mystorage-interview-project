@@ -24,7 +24,10 @@ export default function EvalRunner() {
     setError(null)
     try {
       const response = await fetch('/api/eval', { method: 'POST' })
-      if (!response.ok) throw new Error(`Server trả lỗi ${response.status}`)
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as { error?: string } | null
+        throw new Error(body?.error ?? `Server trả lỗi ${response.status}`)
+      }
       setResult((await response.json()) as EvalResponse)
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
@@ -40,7 +43,8 @@ export default function EvalRunner() {
         <h2>Chạy 15 câu hỏi qua cả hai prompt</h2>
         <p>
           Mỗi câu có một expectation máy kiểm tra được — số phải nêu đúng, chuỗi phải xuất hiện, hoặc
-          phải từ chối. Điểm số dưới đây là kết quả chạy thật, không phải số bịa.
+          phải từ chối. Cột "ungrounded" dùng prompt tái tạo của tôi, không phải prompt thật của
+          MyStorage.
         </p>
       </div>
 
@@ -53,6 +57,12 @@ export default function EvalRunner() {
       {result?.mock && (
         <div className="notice">
           <span>MOCK PROVIDER — điểm số dưới đây không phải kết quả thật, chỉ để kiểm tra kết nối.</span>
+        </div>
+      )}
+
+      {result && !result.mock && (
+        <div className="notice">
+          <span>Điểm số dưới đây là kết quả chạy thật qua Gemini, không phải số bịa.</span>
         </div>
       )}
 

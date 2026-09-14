@@ -85,8 +85,8 @@ const server = createServer(async (req, res) => {
     const url = new URL(req.url ?? '/', `http://localhost:${PORT}`)
 
     if (req.method === 'POST' && url.pathname === '/api/ask') {
-      const body = (await readJsonBody(req)) as { question?: string }
-      if (!body.question) {
+      const body = (await readJsonBody(req)) as { question?: unknown }
+      if (typeof body.question !== 'string' || !body.question.trim()) {
         res.writeHead(400, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify({ error: 'question is required' }))
         return
@@ -119,6 +119,6 @@ const server = createServer(async (req, res) => {
   }
 })
 
-server.listen(PORT, () => {
+server.listen(PORT, '127.0.0.1', () => {
   console.log(`Server listening on http://localhost:${PORT}${isMockProvider() ? ' (PROVIDER=mock)' : ''}`)
 })

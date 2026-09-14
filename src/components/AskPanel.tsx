@@ -40,7 +40,10 @@ export default function AskPanel() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question }),
       })
-      if (!response.ok) throw new Error(`Server trả lỗi ${response.status}`)
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as { error?: string } | null
+        throw new Error(body?.error ?? `Server trả lỗi ${response.status}`)
+      }
       setResult((await response.json()) as AskResponse)
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))

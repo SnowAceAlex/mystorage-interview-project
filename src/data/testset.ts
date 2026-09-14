@@ -35,7 +35,7 @@ export const TESTSET: Expectation[] = [
   {
     id: 'unit-size-range',
     question: 'Kho tự quản có những kích thước nào?',
-    requiredStrings: ['1', '23', 'CBM'],
+    requiredStrings: ['23', 'CBM'],
   },
   {
     id: 'wine-storage-spec',

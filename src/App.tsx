@@ -130,7 +130,8 @@ export default function App() {
       <footer className="colophon">
         <p>
           <strong>Chạy thử:</strong> <code>npm install</code> → <code>npm run dev</code> để xem trang
-          này, <code>npm run eval</code> để chạy 7 check trong terminal.
+          này, <code>npm run eval:transcript</code> để chạy 7 check trong terminal, hoặc{' '}
+          <code>npm run eval</code> để chạy 15 câu hỏi qua cả hai prompt.
         </p>
         <p>
           Nguồn dữ liệu đối chiếu: <a href={SOURCE.url}>{SOURCE.label}</a> (verified {SOURCE.verifiedAt})

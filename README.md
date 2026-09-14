@@ -30,6 +30,7 @@ npm run build && npm start  # production build, single port
 `PROVIDER=mock npm run eval` runs the whole pipeline without a real API key — useful for
 checking the wiring, never for a real score (every mock answer is labelled `[MOCK-...]`).
 `npm run models` lists the Gemini models your key can access, for debugging `GEMINI_MODEL`.
+`npm test` runs the unit tests for the prompt/grader/concurrency/testset logic.
 
 ## What's here
 
@@ -42,6 +43,11 @@ checking the wiring, never for a real score (every mock answer is labelled `[MOC
 | `src/lib/provider.ts` | `ask()` over the Gemini REST API (or a labelled mock for wiring tests). |
 | `src/lib/grader.ts` | Scores an answer against a machine-checkable expectation — reuses `factCheck.ts`'s number parsing. |
 | `src/data/testset.ts` | 15 questions with expectations, every one traceable to `llms.txt` or `groundTruth.ts`. |
+| `src/lib/concurrency.ts` | Small in-house concurrency limiter, used by the server and CLI eval runner. |
+| `src/evals/runPromptEval.ts` | CLI runner for the prompt testset (`npm run eval`). |
+| `src/components/Chat.tsx` | Shared `Bubble`/`ColumnLabel` chat UI pieces, used by both the static demo and the live ask box. |
+| `src/components/AskPanel.tsx` | The live ask box: one question, two real answers, pass/fail chips. |
+| `src/components/EvalRunner.tsx` | "Run test set" button and the 15-question score table. |
 | `src/server/index.ts` | `POST /api/ask`, `POST /api/eval`, serves the built frontend. The API key never reaches the client. |
 | `src/evals/run.ts` | CLI runner for the checks (`npm run eval:transcript`). |
 | `src/components/ProtectionPlanCard.tsx` | The fix for F3/F4 — renders ceilings and remaining headroom instead of describing them. |
@@ -58,7 +64,7 @@ fails CI instead of reaching a customer.
 
 ## Checks currently failing
 
-`npm run eval` against the 2026-09-14 transcript: **1/7 pass, 4 high-severity failures.** Each
+`npm run eval:transcript` against the 2026-09-14 transcript: **1/7 pass, 4 high-severity failures.** Each
 failure maps to a numbered finding in FINDINGS.md.
 
 ## Results

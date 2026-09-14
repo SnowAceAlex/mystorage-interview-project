@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "start": "tsx src/server/index.ts",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test src/lib/prompts.test.ts src/lib/grader.test.ts src/lib/concurrency.test.ts src/data/testset.test.ts",
+    "test": "tsx --test \"src/**/*.test.ts\"",
     "eval": "tsx src/evals/runPromptEval.ts",
     "eval:transcript": "tsx src/evals/run.ts",
     "models": "tsx src/scripts/listModels.ts"

@@ -23,7 +23,7 @@ export default function EvalPanel() {
         <h2>7 check chạy trên chính hội thoại đã ghi lại</h2>
         <p>
           Mỗi finding trong báo cáo là một assertion chạy được, không phải ảnh chụp màn hình. Chạy lại
-          bằng <code>npm run eval</code> — exit code khác 0 khi còn lỗi, nên nó cắm thẳng vào CI được.
+          bằng <code>npm run eval:transcript</code> — exit code khác 0 khi còn lỗi, nên nó cắm thẳng vào CI được.
         </p>
       </div>
 

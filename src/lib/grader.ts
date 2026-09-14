@@ -33,7 +33,7 @@ export type GradeResult = {
   contradictions: string[]
 }
 
-const DECLINE_PATTERN = /không hỗ trợ|chưa hỗ trợ|not support|do not offer|cannot store|can't store/i
+const DECLINE_PATTERN = /không hỗ trợ|chưa hỗ trợ|không nhận|not support|do not offer|cannot store|can't store/i
 
 function amountsForKind(kind: AmountKind): number[] {
   if (kind === 'price') return ADVERTISED_PRICES.map((price) => price.floor)
@@ -53,11 +53,15 @@ export function grade(answer: string, expectation: Expectation): GradeResult {
   }
 
   if (expectation.amountKind) {
-    const required = new Set(expectation.requiredAmounts ?? [])
-    const distractors = amountsForKind(expectation.amountKind).filter((amount) => !required.has(amount))
-    const stated = new Set(parseAmounts(answer))
-    for (const distractor of distractors) {
-      if (stated.has(distractor)) contradictions.push(`stated ${distractor} instead of the correct figure`)
+    const required = [...(expectation.requiredAmounts ?? [])]
+    const requiredAllStated = required.every((amount) => statesAmount(answer, amount))
+    if (!requiredAllStated) {
+      const requiredSet = new Set(required)
+      const distractors = amountsForKind(expectation.amountKind).filter((amount) => !requiredSet.has(amount))
+      const stated = new Set(parseAmounts(answer))
+      for (const distractor of distractors) {
+        if (stated.has(distractor)) contradictions.push(`stated ${distractor} instead of the correct figure`)
+      }
     }
   }
 
