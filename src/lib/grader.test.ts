@@ -1,0 +1,65 @@
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { grade } from './grader'
+
+test('passes when the required amount is stated', () => {
+  const result = grade('Gói Silver bồi thường tối đa 25.000.000 VNĐ.', {
+    id: 'x',
+    question: 'q',
+    requiredAmounts: [25_000_000],
+    amountKind: 'ceiling',
+  })
+  assert.equal(result.passed, true)
+  assert.deepEqual(result.missing, [])
+  assert.deepEqual(result.contradictions, [])
+})
+
+test('reports a missing amount', () => {
+  const result = grade('Gói Silver bồi thường một khoản hợp lý.', {
+    id: 'x',
+    question: 'q',
+    requiredAmounts: [25_000_000],
+  })
+  assert.equal(result.passed, false)
+  assert.equal(result.missing.length, 1)
+})
+
+test('flags a same-kind distractor as a contradiction', () => {
+  const result = grade('Gói Silver bồi thường tối đa 50.000.000 VNĐ.', {
+    id: 'x',
+    question: 'q',
+    requiredAmounts: [25_000_000],
+    amountKind: 'ceiling',
+  })
+  assert.equal(result.passed, false)
+  assert.equal(result.missing.length, 1)
+  assert.equal(result.contradictions.length, 1)
+})
+
+test('required strings must all appear, case-insensitively', () => {
+  const result = grade('gói silver là lựa chọn phù hợp', {
+    id: 'x',
+    question: 'q',
+    requiredStrings: ['Silver'],
+  })
+  assert.equal(result.passed, true)
+})
+
+test('mustDecline passes on a clean decline with no invented price', () => {
+  const result = grade('Dạ hiện tại MyStorage chưa hỗ trợ lưu trữ ô tô ạ.', {
+    id: 'x',
+    question: 'q',
+    mustDecline: true,
+  })
+  assert.equal(result.passed, true)
+})
+
+test('mustDecline fails when a price is invented alongside the decline', () => {
+  const result = grade('Dạ chưa hỗ trợ, nhưng giá tham khảo khoảng 500.000 VNĐ.', {
+    id: 'x',
+    question: 'q',
+    mustDecline: true,
+  })
+  assert.equal(result.passed, false)
+  assert.equal(result.contradictions.length, 1)
+})
