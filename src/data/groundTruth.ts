@@ -109,3 +109,90 @@ const vnd = new Intl.NumberFormat('vi-VN')
 export function formatVnd(amount: number): string {
   return `${vnd.format(amount)} VNĐ`
 }
+
+export type CompanyFact = {
+  key: string
+  label: string
+  value: string
+  quote: string
+}
+
+/** Company facts a customer might ask about directly, copied from llms.txt. */
+export const COMPANY_FACTS: CompanyFact[] = [
+  {
+    key: 'founded',
+    label: 'Năm thành lập & quản lý',
+    value: 'Thành lập năm 2019, dưới sự quản lý của đội ngũ Mỹ và Đức.',
+    quote:
+      'Founded 2019, under US and German management; official member of the Self Storage Association of Asia (SSAA) and the American Chamber of Commerce in Vietnam.',
+  },
+  {
+    key: 'headquarters',
+    label: 'Trụ sở chính',
+    value: '375 Võ Nguyên Giáp, Phường An Khánh, Thành phố Thủ Đức, TP. Hồ Chí Minh.',
+    quote: 'Headquarters: 375 Vo Nguyen Giap Street, An Khanh Ward, Thu Duc City, Ho Chi Minh City, Vietnam.',
+  },
+  {
+    key: 'phone',
+    label: 'Số điện thoại',
+    value: '028 7770 0117 (+84 28 7770 0117)',
+    quote: 'Phone: 028 7770 0117 (+84 28 7770 0117). Email: hello@mystorage.vn.',
+  },
+  {
+    key: 'reply-time',
+    label: 'Thời gian phản hồi',
+    value: 'Hỗ trợ Thứ Hai–Thứ Bảy, 9h–18h (Chủ nhật hỗ trợ từ xa); phản hồi trong khoảng 2 giờ trong giờ làm việc.',
+    quote:
+      'Support hours: Monday–Saturday, 9am–6pm (remote support on Sundays); typical reply time is 2 hours during business hours.',
+  },
+  {
+    key: 'reviews',
+    label: 'Đánh giá khách hàng',
+    value: 'Hơn 650 đánh giá 5 sao từ khách hàng đã xác thực trên Google.',
+    quote: '650+ five-star reviews from verified customers on Google.',
+  },
+  {
+    key: 'locations-count',
+    label: 'Số lượng cơ sở',
+    value: '8 cơ sở tại TP.HCM và Đồng Nai.',
+    quote:
+      'MyStorage is a self-storage and full-service storage company in Ho Chi Minh City, Vietnam, founded in 2019 under US and German management, with 8 facilities across HCMC and Dong Nai.',
+  },
+  {
+    key: 'languages',
+    label: 'Ngôn ngữ website',
+    value: 'Tiếng Anh, Tiếng Việt, Tiếng Hàn, Tiếng Nhật.',
+    quote: 'What languages is the MyStorage website available in? A: English, Vietnamese, Korean, and Japanese.',
+  },
+  {
+    key: 'booking',
+    label: 'Cách đặt kho',
+    value: 'Đặt online tại booking.mystorage.vn, hoặc liên hệ qua điện thoại/email/messenger.',
+    quote: 'Booking: https://booking.mystorage.vn/en/book?step=service — book online, or contact by phone/email/messenger.',
+  },
+  {
+    key: 'self-vs-full-service',
+    label: 'Khác biệt Self Storage và Full Service Storage',
+    value:
+      'Self Storage: khách tự ra vào kho riêng bất cứ lúc nào. Full Service: nhân viên MyStorage lấy, lưu trữ và trả đồ, khách không cần đến kho.',
+    quote:
+      "Self Storage gives customers a private unit they can access directly and independently, any time. Full Service Storage is pickup-and-delivery: MyStorage staff retrieve, store, and return items, so the customer never has to visit a facility themselves.",
+  },
+]
+
+/** Self-storage unit size range, from the Self Storage service page and Size Guide. */
+export const UNIT_SIZE_RANGE = {
+  min: 1,
+  max: 23,
+  unit: 'CBM',
+  quote: 'Private, air-conditioned self-storage units from 1–23 CBM with 24/7 access; 480+ units across HCMC.',
+}
+
+/** Wine storage climate spec, from the Wine Storage page. */
+export const WINE_STORAGE = {
+  tempLow: 12,
+  tempHigh: 15,
+  humidityLow: 60,
+  humidityHigh: 70,
+  quote: 'Wine Storage: Climate-controlled at 12–15°C and 60–70% humidity, 24/7 access.',
+}
