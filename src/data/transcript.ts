@@ -6,7 +6,7 @@
  * real ones. Assistant turns are verbatim.
  *
  * This file is the test fixture: the checks in src/lib/factCheck.ts run against
- * it, so every finding in FINDINGS.md is reproducible with `npm run eval`
+ * it, so every finding in FINDINGS.md is reproducible with `npm run eval:transcript`
  * instead of being a screenshot someone has to take on trust.
  */
 

@@ -1,7 +1,7 @@
 /**
  * Runs the fact checks over the captured transcript and prints a report.
  *
- *   npm run eval
+ *   npm run eval:transcript
  *
  * Exit code is non-zero when any check fails, so this can sit in CI and fail a
  * build the same way a unit test would.

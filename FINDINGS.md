@@ -7,7 +7,7 @@ compared against the company's own published figures in `mystorage.vn/llms.txt` 
 it links to.
 
 Each finding below is encoded as a check in `src/lib/factCheck.ts` and runs against the
-captured transcript with `npm run eval`, so none of it has to be taken on trust.
+captured transcript with `npm run eval:transcript`, so none of it has to be taken on trust.
 
 ---
 
@@ -154,7 +154,7 @@ F1.
 - `src/components/PricingFactCard.tsx` — reconciles a quoted price against the advertised floor
   and surfaces the gap.
 - `src/lib/factCheck.ts` + `src/evals/run.ts` — the six findings above as deterministic checks
-  over the real transcript. `npm run eval` exits non-zero while any check fails, so this belongs
+  over the real transcript. `npm run eval:transcript` exits non-zero while any check fails, so this belongs
   in CI.
 
 Current result: **1/7 checks pass** against the live assistant's answers.

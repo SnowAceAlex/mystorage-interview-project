@@ -8,7 +8,7 @@ const SEVERITY_LABEL: Record<string, string> = {
 }
 
 /**
- * The same checks `npm run eval` runs, rendered live. Nothing here is a
+ * The same checks `npm run eval:transcript` runs, rendered live. Nothing here is a
  * screenshot: the rows below are computed from the captured transcript every
  * time the page loads.
  */
