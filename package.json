@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "start": "tsx src/server/index.ts",
     "typecheck": "tsc --noEmit",
-    "eval": "tsx src/evals/run.ts",
+    "eval": "tsx src/evals/runPromptEval.ts",
+    "eval:transcript": "tsx src/evals/run.ts",
     "models": "tsx src/scripts/listModels.ts"
   },
   "dependencies": {
