@@ -1,8 +1,11 @@
-import { ADVERTISED_PRICES, SOURCE, formatVnd } from '../data/groundTruth'
+import { useTranslation } from 'react-i18next'
+import { ADVERTISED_PRICES, SOURCE, formatVndFor } from '../data/groundTruth'
+import { useLocale } from '../i18n'
+import type { en } from '../i18n/locales/en'
 
 type Props = {
   /** Key into ADVERTISED_PRICES. */
-  service: string
+  service: keyof typeof en.services
   /** Lowest price the assistant actually quoted in the conversation. */
   quoted: number
 }
@@ -13,9 +16,12 @@ type Props = {
  * gap only surfaces when a customer notices it.
  */
 export default function PricingFactCard({ service, quoted }: Props) {
+  const { t } = useTranslation()
+  const locale = useLocale()
   const advertised = ADVERTISED_PRICES.find((price) => price.key === service)
   if (!advertised) return null
 
+  const money = (amount: number) => formatVndFor(amount, locale)
   const gap = quoted - advertised.floor
   const gapPercent = Math.round((gap / advertised.floor) * 100)
   const drifted = gap > 0
@@ -23,30 +29,30 @@ export default function PricingFactCard({ service, quoted }: Props) {
   return (
     <div className="factcard">
       <header>
-        <h3>{advertised.service}</h3>
-        <span>nguồn: {SOURCE.label}</span>
+        <h3>{t(`services.${service}`)}</h3>
+        <span>{t('factcard.source', { label: SOURCE.label })}</span>
       </header>
-      <div className="delta">
+      <dl className="delta">
         <div>
-          <span className="label">Giá công bố (llms.txt) từ</span>
-          <span className="value">{formatVnd(advertised.floor)}</span>
+          <dt>{t('factcard.advertisedFrom')}</dt>
+          <dd className="value">{money(advertised.floor)}</dd>
         </div>
         <div>
-          <span className="label">Thấp nhất trong chat</span>
-          <span className={drifted ? 'value bad' : 'value'}>{formatVnd(quoted)}</span>
+          <dt>{t('factcard.lowestInChat')}</dt>
+          <dd className={drifted ? 'value bad' : 'value'}>{money(quoted)}</dd>
         </div>
         <div>
-          <span className="label">Chênh lệch</span>
-          <span className={drifted ? 'value bad' : 'value'}>
+          <dt>{t('factcard.gap')}</dt>
+          <dd className={drifted ? 'value bad' : 'value'}>
             {drifted ? '+' : ''}
             {gapPercent}%
-          </span>
+          </dd>
         </div>
-      </div>
+      </dl>
       <footer>
         {drifted
-          ? `Chênh ${formatVnd(gap)}/tháng so với mức "từ" mà ${SOURCE.label} công bố. Cần chốt lại: hoặc cập nhật lại giá sàn, hoặc trợ lý phải nêu rõ gói nào mới có mức ${formatVnd(advertised.floor)}.`
-          : `Giá trong chat khớp với giá sàn theo ${SOURCE.label}.`}
+          ? t('factcard.drifted', { gap: money(gap), label: SOURCE.label, floor: money(advertised.floor) })
+          : t('factcard.matches', { label: SOURCE.label })}
       </footer>
     </div>
   )

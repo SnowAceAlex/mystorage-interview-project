@@ -1,11 +1,9 @@
+import { useMemo } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { runChecks } from '../lib/factCheck'
 import { AUDIT_TRANSCRIPT } from '../data/transcript'
-
-const SEVERITY_LABEL: Record<string, string> = {
-  high: 'nghiêm trọng',
-  medium: 'trung bình',
-  low: 'thấp',
-}
+import { useLocale } from '../i18n'
+import ScoreTile from './ScoreTile'
 
 /**
  * The same checks `npm run eval:transcript` runs, rendered live. Nothing here is a
@@ -13,46 +11,51 @@ const SEVERITY_LABEL: Record<string, string> = {
  * time the page loads.
  */
 export default function EvalPanel() {
-  const results = runChecks(AUDIT_TRANSCRIPT)
+  const { t } = useTranslation()
+  const locale = useLocale()
+  const results = useMemo(() => runChecks(AUDIT_TRANSCRIPT, locale), [locale])
   const passed = results.filter((result) => result.passed).length
 
   return (
-    <div className="section">
+    <section className="section" aria-labelledby="eval-panel-title">
       <div className="section-head">
-        <span className="eyebrow">Kiểm thử tự động</span>
-        <h2>7 check chạy trên chính hội thoại đã ghi lại</h2>
+        <span className="eyebrow">{t('evalPanel.eyebrow')}</span>
+        <h2 id="eval-panel-title">{t('evalPanel.title')}</h2>
         <p>
-          Mỗi finding trong báo cáo là một assertion chạy được, không phải ảnh chụp màn hình. Chạy lại
-          bằng <code>npm run eval:transcript</code> — exit code khác 0 khi còn lỗi, nên nó cắm thẳng vào CI được.
+          <Trans i18nKey="evalPanel.body" components={{ code: <code /> }} />
         </p>
       </div>
 
-      <div className="score">
-        <strong>
-          {passed}/{results.length}
-        </strong>
-        <span>check đạt · transcript {AUDIT_TRANSCRIPT.id}</span>
+      <div className="scores">
+        <ScoreTile
+          tone={passed === results.length ? 'good' : 'bad'}
+          value={passed}
+          total={results.length}
+          label={`${t('evalPanel.score')} · ${t('evalPanel.transcript', { id: AUDIT_TRANSCRIPT.id })}`}
+        />
       </div>
 
       <div className="checks">
         {results.map((result) => (
-          <div key={result.id} className={result.passed ? 'check passed' : 'check'}>
+          <article key={result.id} className={result.passed ? 'check passed' : 'check'}>
             <div className="check-head">
-              <span className={result.passed ? 'pill pass' : 'pill'}>{result.passed ? 'PASS' : 'FAIL'}</span>
+              <span className={result.passed ? 'pill pass' : 'pill'}>
+                {result.passed ? t('grade.pass') : t('grade.fail')}
+              </span>
               <h3>{result.title}</h3>
-              {!result.passed && <span className="severity">{SEVERITY_LABEL[result.severity]}</span>}
+              {!result.passed && <span className="severity">{t(`severity.${result.severity}`)}</span>}
             </div>
             <dl>
-              <dt>Nguồn</dt>
+              <dt>{t('evalPanel.expected')}</dt>
               <dd>{result.expected}</dd>
-              <dt>Thực tế</dt>
+              <dt>{t('evalPanel.observed')}</dt>
               <dd>{result.observed}</dd>
-              <dt>Ảnh hưởng</dt>
+              <dt>{t('evalPanel.impact')}</dt>
               <dd>{result.impact}</dd>
             </dl>
-          </div>
+          </article>
         ))}
       </div>
-    </div>
+    </section>
   )
 }
