@@ -74,9 +74,24 @@ failure maps to a numbered finding in FINDINGS.md.
 
 ## Results
 
-<!-- TODO (Vinh): fill this in from a real `npm run eval` run with your own GEMINI_API_KEY.
-     Paste the final "ungrounded X/15 vs grounded Y/15" line and a sentence on what still
-     fails, if anything. Do not write a number you haven't actually observed. -->
+Real run, 2026-09-15, `PROVIDER=groq` (`openai/gpt-oss-20b` — Gemini's free tier proved too
+rate-limited to complete a full 15-question run in one sitting; see `PROVIDER=groq|gemini|mock`
+above):
+
+**ungrounded 2/15 vs grounded 14/15.**
+
+The ungrounded prompt passes only when the model's general knowledge happens to line up with
+MyStorage's actual numbers (it doesn't have any). The one remaining grounded failure is
+`protection-ceilings`: the model correctly stated the Basic and Silver ceilings in full, but
+dropped a zero group on Gold and Platinum ("50.000 VNĐ" / "100.000 VNĐ" instead of "50.000.000" /
+"100.000.000") — a real precision slip on later items in a longer list, not a grading artifact.
+Grounding fixes retrieval; it doesn't guarantee perfect transcription of every number, every time.
+
+Running this eval also surfaced a real bug in the grader itself: it initially failed several
+genuinely-correct grounded answers because the model grouped digits with a Unicode narrow
+no-break space (U+202F) instead of a dot, which `parseAmounts`/`statesAmount` didn't recognize.
+Fixed in `src/lib/factCheck.ts` (see git history) — worth knowing if a different model produces
+a different score than the one above.
 
 ## Notes
 
