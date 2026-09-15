@@ -16,6 +16,21 @@ makes the numbers come from one file, and turns the findings into tests that fai
 > under test is "ungrounded prompting produces this class of error and grounding measurably fixes
 > it," not "here is their prompt."
 
+## Live demo
+
+**[mystorage-interview-project.vercel.app](https://mystorage-interview-project.vercel.app/)** — a
+static build. Vercel serves the frontend, but `src/server/index.ts` is a plain `node:http` server,
+which doesn't run on Vercel's serverless model — there is no live backend behind that link.
+
+What still works there: the audit evidence, the static before/after mockups, and the 15-question
+**test set panel, pre-loaded with the real result from an actual run** (`src/data/cachedEvalResult.json`,
+committed, not regenerated on every deploy) — so the ungrounded-vs-grounded score is real, just not
+freshly computed on page load. What doesn't work: the ask box and the "run live" button both need
+`POST /api/ask`/`/api/eval`, which only exist when `npm run dev`/`npm start` is running — the UI
+says so explicitly if you try either on the deployed link.
+
+For the actual interactive demo: `npm install && cp .env.example .env` (add a key) `&& npm run dev`.
+
 ## Run it
 
 ```bash

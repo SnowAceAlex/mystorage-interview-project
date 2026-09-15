@@ -42,7 +42,12 @@ export default function AskPanel() {
       })
       if (!response.ok) {
         const body = (await response.json().catch(() => null)) as { error?: string } | null
-        throw new Error(body?.error ?? `Server trả lỗi ${response.status}`)
+        throw new Error(
+          body?.error ??
+            `Không gọi được server API (mã lỗi ${response.status}). Có thể đây là bản deploy tĩnh ` +
+              'không có backend sống — hộp hỏi trực tiếp cần chạy npm run dev ở máy local (có API key). ' +
+              'Xem mục "Bộ câu hỏi chấm điểm" bên dưới để thấy kết quả chạy thật đã lưu sẵn.',
+        )
       }
       setResult((await response.json()) as AskResponse)
     } catch (err) {

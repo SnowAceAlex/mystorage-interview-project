@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { GradeResult } from '../lib/grader'
+import cachedResult from '../data/cachedEvalResult.json'
 
 type EvalRow = {
   id: string
@@ -8,29 +9,41 @@ type EvalRow = {
   grounded: { answer: string; grade: GradeResult }
 }
 
-type EvalResponse = {
+type EvalTotals = { baseline: number; grounded: number; total: number }
+
+type EvalState = {
   rows: EvalRow[]
-  totals: { baseline: number; grounded: number; total: number }
-  mock: boolean
+  totals: EvalTotals
+  mock?: boolean
 }
 
+const CACHED: EvalState & { capturedAt: string; provider: string; model: string } = cachedResult
+
 export default function EvalRunner() {
-  const [result, setResult] = useState<EvalResponse | null>(null)
+  const [result, setResult] = useState<EvalState>(CACHED)
+  const [usingCache, setUsingCache] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [liveError, setLiveError] = useState<string | null>(null)
 
   async function runEval() {
     setLoading(true)
-    setError(null)
+    setLiveError(null)
     try {
       const response = await fetch('/api/eval', { method: 'POST' })
       if (!response.ok) {
         const body = (await response.json().catch(() => null)) as { error?: string } | null
         throw new Error(body?.error ?? `Server trả lỗi ${response.status}`)
       }
-      setResult((await response.json()) as EvalResponse)
+      const live = (await response.json()) as EvalState
+      setResult(live)
+      setUsingCache(false)
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err))
+      const message = err instanceof Error ? err.message : String(err)
+      setLiveError(
+        `Không gọi được server API (${message}). Đây có thể là bản deploy tĩnh không có backend sống — ` +
+          `kết quả bên dưới vẫn là lần chạy thật gần nhất đã lưu sẵn, không phải số bịa. Chạy ` +
+          `npm run dev ở máy local (có API key) để tự chạy trực tiếp.`,
+      )
     } finally {
       setLoading(false)
     }
@@ -49,65 +62,71 @@ export default function EvalRunner() {
       </div>
 
       <button type="button" onClick={runEval} disabled={loading}>
-        {loading ? 'Đang chạy…' : 'Chạy test set'}
+        {loading ? 'Đang chạy…' : 'Chạy trực tiếp (cần server local)'}
       </button>
 
-      {error && <div className="notice">{error}</div>}
+      {liveError && <div className="notice">{liveError}</div>}
 
-      {result?.mock && (
+      {result.mock && (
         <div className="notice">
           <span>MOCK PROVIDER — điểm số dưới đây không phải kết quả thật, chỉ để kiểm tra kết nối.</span>
         </div>
       )}
 
-      {result && !result.mock && (
+      {!result.mock && usingCache && (
         <div className="notice">
-          <span>Điểm số dưới đây là kết quả chạy thật qua Gemini, không phải số bịa.</span>
+          <span>
+            Kết quả chạy thật gần nhất, lưu sẵn ngày {CACHED.capturedAt} qua {CACHED.provider}/
+            {CACHED.model} — không phải số bịa, chỉ không phải vừa chạy ngay lúc này. Bấm nút trên để
+            thử chạy trực tiếp (cần server + API key ở local).
+          </span>
         </div>
       )}
 
-      {result && (
-        <>
-          <div className="score">
-            <strong>
-              {result.totals.baseline}/{result.totals.total}
-            </strong>
-            <span>ungrounded</span>
-            <strong>
-              {result.totals.grounded}/{result.totals.total}
-            </strong>
-            <span>grounded</span>
-          </div>
-
-          <div className="checks">
-            {result.rows.map((row) => (
-              <details key={row.id} className={row.grounded.grade.passed ? 'check passed' : 'check'}>
-                <summary className="check-head">
-                  <span className={row.baseline.grade.passed ? 'pill pass' : 'pill'}>
-                    ungrounded {row.baseline.grade.passed ? 'PASS' : 'FAIL'}
-                  </span>
-                  <span className={row.grounded.grade.passed ? 'pill pass' : 'pill'}>
-                    grounded {row.grounded.grade.passed ? 'PASS' : 'FAIL'}
-                  </span>
-                  <h3>{row.question}</h3>
-                </summary>
-                <dl>
-                  <dt>Ungrounded</dt>
-                  <dd>{row.baseline.answer}</dd>
-                  <dt>Grounded</dt>
-                  <dd>{row.grounded.answer}</dd>
-                  {row.grounded.grade.missing.length + row.grounded.grade.contradictions.length > 0 && (
-                    <>
-                      <dt>Vấn đề (grounded)</dt>
-                      <dd>{[...row.grounded.grade.missing, ...row.grounded.grade.contradictions].join('; ')}</dd>
-                    </>
-                  )}
-                </dl>
-              </details>
-            ))}
-          </div>
-        </>
+      {!result.mock && !usingCache && (
+        <div className="notice">
+          <span>Điểm số dưới đây vừa chạy trực tiếp qua API sống, không phải số bịa.</span>
+        </div>
       )}
+
+      <div className="score">
+        <strong>
+          {result.totals.baseline}/{result.totals.total}
+        </strong>
+        <span>ungrounded</span>
+        <strong>
+          {result.totals.grounded}/{result.totals.total}
+        </strong>
+        <span>grounded</span>
+      </div>
+
+      <div className="checks">
+        {result.rows.map((row) => (
+          <details key={row.id} className={row.grounded.grade.passed ? 'check passed' : 'check'}>
+            <summary className="check-head">
+              <span className={row.baseline.grade.passed ? 'pill pass' : 'pill'}>
+                ungrounded {row.baseline.grade.passed ? 'PASS' : 'FAIL'}
+              </span>
+              <span className={row.grounded.grade.passed ? 'pill pass' : 'pill'}>
+                grounded {row.grounded.grade.passed ? 'PASS' : 'FAIL'}
+              </span>
+              <h3>{row.question}</h3>
+            </summary>
+            <dl>
+              <dt>Ungrounded</dt>
+              <dd>{row.baseline.answer}</dd>
+              <dt>Grounded</dt>
+              <dd>{row.grounded.answer}</dd>
+              {row.grounded.grade.missing.length + row.grounded.grade.contradictions.length > 0 && (
+                <>
+                  <dt>Vấn đề (grounded)</dt>
+                  <dd>{[...row.grounded.grade.missing, ...row.grounded.grade.contradictions].join('; ')}</dd>
+                </>
+              )}
+            </dl>
+          </details>
+        ))}
+      </div>
     </div>
   )
 }
