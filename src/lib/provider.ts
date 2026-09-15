@@ -9,7 +9,7 @@ export type AskFn = (systemPrompt: string, question: string) => Promise<string>
 
 const PROVIDER = process.env.PROVIDER ?? 'gemini'
 const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-2.0-flash'
-const GROQ_MODEL = process.env.GROQ_MODEL ?? 'llama-3.3-70b-versatile'
+const GROQ_MODEL = process.env.GROQ_MODEL ?? 'openai/gpt-oss-20b'
 
 const MOCK_WARNING = '⚠️  MOCK PROVIDER — not real results, wiring test only  ⚠️'
 
