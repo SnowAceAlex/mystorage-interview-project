@@ -105,10 +105,24 @@ export function planFor(declaredValue: number): ProtectionPlan | undefined {
 }
 
 const vnd = new Intl.NumberFormat('vi-VN')
+const vndEn = new Intl.NumberFormat('en-US')
 
 export function formatVnd(amount: number): string {
   return `${vnd.format(amount)} VNĐ`
 }
+
+/** Display formatting per UI locale. The 'vi' branch is exactly formatVnd. */
+export function formatVndFor(amount: number, locale: 'en' | 'vi'): string {
+  return locale === 'vi' ? formatVnd(amount) : `${vndEn.format(amount)} VND`
+}
+
+/** Locale-neutral key for each tier, so UI copy can name it in either language. */
+export const TIER_KEY = {
+  'Cơ bản': 'basic',
+  Silver: 'silver',
+  Gold: 'gold',
+  Platinum: 'platinum',
+} as const satisfies Record<ProtectionPlan['tier'], string>
 
 export type CompanyFact = {
   key: string

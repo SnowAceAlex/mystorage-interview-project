@@ -8,8 +8,12 @@
  * conversation.
  */
 
-import { ADVERTISED_PRICES, PROTECTION_PLANS, formatVnd } from '../data/groundTruth'
+import { ADVERTISED_PRICES, PROTECTION_PLANS, TIER_KEY, formatVndFor, type ProtectionPlan } from '../data/groundTruth'
 import type { Transcript, Turn } from '../data/transcript'
+import { en as enMessages } from '../i18n/locales/en'
+import { CHECK_COPY, type CheckCopy, type Locale } from './factCheck.copy'
+
+export type { Locale } from './factCheck.copy'
 
 export type Severity = 'high' | 'medium' | 'low'
 
@@ -94,57 +98,65 @@ export function airConditionedQuotes(transcript: Transcript): number[] {
   return [...new Set(quotes)].sort((a, b) => a - b)
 }
 
+type Format = {
+  copy: CheckCopy
+  money: (amount: number) => string
+  tier: (plan: ProtectionPlan) => string
+}
+
+function formatFor(locale: Locale): Format {
+  return {
+    copy: CHECK_COPY[locale],
+    money: (amount) => formatVndFor(amount, locale),
+    tier: (plan) => (locale === 'vi' ? plan.tier : enMessages.plans.tiers[TIER_KEY[plan.tier]]),
+  }
+}
+
 /**
  * The assistant quotes prices above the floor the website advertises, without
  * ever reconciling the two. The customer arrives having seen "from 559,000".
  */
-function checkAdvertisedFloor(transcript: Transcript): CheckResult {
+function checkAdvertisedFloor(transcript: Transcript, { copy, money }: Format): CheckResult {
   const advertised = ADVERTISED_PRICES.find((price) => price.key === 'air-conditioned')!
   const quoted = airConditionedQuotes(transcript)
   const lowest = quoted.length ? Math.min(...quoted) : undefined
   const passed = lowest !== undefined && lowest <= advertised.floor
   const gap = lowest === undefined ? 0 : Math.round(((lowest - advertised.floor) / advertised.floor) * 100)
+  const text = copy.advertisedFloor
 
   return {
     id: 'advertised-floor',
-    title: 'Giá thấp nhất trong chat khớp với giá "từ" đang quảng cáo',
+    title: text.title,
     severity: 'high',
     passed,
-    expected: `${formatVnd(advertised.floor)}/tháng — ${advertised.quote}`,
+    expected: text.expected(money(advertised.floor), advertised.quote),
     observed:
-      lowest === undefined
-        ? 'Không tìm thấy báo giá kho máy lạnh nào trong hội thoại.'
-        : `Thấp nhất ${formatVnd(lowest)}/tháng (cao hơn ${gap}%); các mức khác: ${quoted
-            .map(formatVnd)
-            .join(', ')}.`,
-    impact:
-      'Khách đọc "từ 559.000" trên website rồi được báo giá cao hơn 39% ngay câu hỏi đầu tiên. Hoặc trang web sai, hoặc trợ lý bỏ sót gói rẻ nhất — cả hai đều làm hỏng niềm tin đúng lúc khách đang so giá.',
+      lowest === undefined ? text.observedNone : text.observed(money(lowest), gap, quoted.map(money).join(', ')),
+    impact: text.impact,
   }
 }
 
 /** A published figure the customer asked for directly must appear in the answer. */
-function checkLuggageRateDisclosed(transcript: Transcript): CheckResult {
+function checkLuggageRateDisclosed(transcript: Transcript, { copy, money }: Format): CheckResult {
   const advertised = ADVERTISED_PRICES.find((price) => price.key === 'luggage')!
   const exchange = answerTo(transcript, (text) => /hành lý/i.test(text) && /giá|bao nhiêu|giờ/i.test(text))
   const answer = exchange?.answer?.text ?? ''
   const passed = statesAmount(answer, advertised.floor)
+  const text = copy.luggageRate
 
   return {
     id: 'luggage-rate-disclosed',
-    title: 'Hỏi thẳng giá theo giờ thì phải nhận được con số',
+    title: text.title,
     severity: 'medium',
     passed,
-    expected: `${formatVnd(advertised.floor)}/giờ — ${advertised.quote}`,
-    observed: passed
-      ? 'Câu trả lời có nêu mức giá theo giờ.'
-      : 'Không có con số nào; trợ lý chuyển hướng sang link booking.mystorage.vn/vi/autolocker.',
-    impact:
-      'Con số này đã công bố công khai. Bắt khách bấm thêm một link để biết giá là rào cản không cần thiết ngay ở bước khách đang cân nhắc.',
+    expected: text.expected(money(advertised.floor), advertised.quote),
+    observed: passed ? text.observedPass : text.observedFail,
+    impact: text.impact,
   }
 }
 
 /** Protection ceilings are public; the assistant should state them. */
-function checkProtectionCapsDisclosed(transcript: Transcript): CheckResult {
+function checkProtectionCapsDisclosed(transcript: Transcript, { copy, money, tier }: Format): CheckResult {
   const upgraded = PROTECTION_PLANS.filter((plan) => plan.tier !== 'Cơ bản')
   const protectionTurns = transcript.turns.filter(
     (turn) => turn.role === 'assistant' && /(Silver|Gold|Platinum|bảo vệ|bảo hiểm)/i.test(turn.text),
@@ -153,119 +165,114 @@ function checkProtectionCapsDisclosed(transcript: Transcript): CheckResult {
     protectionTurns.some((turn) => statesAmount(turn.text, plan.cap)),
   )
   const passed = disclosed.length === upgraded.length
+  const text = copy.protectionCaps
 
   return {
     id: 'protection-caps-disclosed',
-    title: 'Hạn mức bồi thường từng gói được nêu bằng số',
+    title: text.title,
     severity: 'high',
     passed,
-    expected: upgraded.map((plan) => `${plan.tier} ${formatVnd(plan.cap)}`).join(' · '),
-    observed: passed
-      ? 'Đã nêu đủ hạn mức các gói nâng cao.'
-      : `Nêu được ${disclosed.length}/${upgraded.length} hạn mức. Trợ lý mô tả bằng chữ: "các mốc hàng chục hay hàng trăm triệu đồng".`,
-    impact:
-      'Đây là số tiền được bồi thường khi mất mát. Khách không thể tự kiểm chứng gói nào đủ cho tài sản của mình, dù chính FAQ của công ty đã công bố các mốc này.',
+    expected: upgraded.map((plan) => `${tier(plan)} ${money(plan.cap)}`).join(' · '),
+    observed: passed ? text.observedPass : text.observedFail(disclosed.length, upgraded.length),
+    impact: text.impact,
   }
 }
 
 /** A "fully covered" promise has to come with the ceiling it refers to. */
-function checkCoverageClaimBacked(transcript: Transcript): CheckResult {
+function checkCoverageClaimBacked(transcript: Transcript, { copy, money, tier: tierName }: Format): CheckResult {
   const claimTurn = transcript.turns.find(
     (turn) => turn.role === 'assistant' && /bao quát trọn vẹn|trọn vẹn giá trị|fully cover/i.test(turn.text),
   )
   const tier = claimTurn ? PROTECTION_PLANS.find((plan) => new RegExp(plan.tier, 'i').test(claimTurn.text)) : undefined
   const passed = !claimTurn || (!!tier && statesAmount(claimTurn.text, tier.cap))
+  const text = copy.coverageClaim
 
   return {
     id: 'coverage-claim-backed',
-    title: 'Khẳng định "bao quát trọn vẹn" phải kèm hạn mức của gói',
+    title: text.title,
     severity: 'high',
     passed,
-    expected: tier
-      ? `Khuyến nghị ${tier.tier} thì phải nêu hạn mức ${formatVnd(tier.cap)}.`
-      : 'Mọi khẳng định về phạm vi bảo vệ đều kèm hạn mức.',
+    expected: tier ? text.expectedTier(tierName(tier), money(tier.cap)) : text.expectedAny,
     observed: passed
-      ? 'Khẳng định có kèm hạn mức.'
-      : `Khuyến nghị ${tier?.tier ?? 'một gói'} và khẳng định "bao quát trọn vẹn giá trị khai báo" mà không nêu mức trần ${
-          tier ? formatVnd(tier.cap) : ''
-        }.`,
-    impact:
-      'Khách khai 20 triệu, sát trần 25 triệu của gói Silver. Thêm một món đồ nữa là vượt hạn mức mà khách không hề biết mình đang ở đâu so với ngưỡng.',
+      ? text.observedPass
+      : text.observedFail(tier ? tierName(tier) : undefined, tier ? money(tier.cap) : ''),
+    impact: text.impact,
   }
 }
 
 /** The same spec must not change between two turns of one conversation. */
-function checkSpecConsistency(transcript: Transcript): CheckResult {
+function checkSpecConsistency(transcript: Transcript, { copy }: Format): CheckResult {
   const ranges = new Set<string>()
   for (const line of assistantLines(transcript)) {
     if (!isAirConditionedLine(line)) continue
     for (const [, low, high] of line.matchAll(TEMP_RANGE)) ranges.add(`${low}–${high}°C`)
   }
   const passed = ranges.size <= 1
+  const text = copy.specConsistency
 
   return {
     id: 'spec-consistency',
-    title: 'Thông số kho máy lạnh nhất quán trong cùng hội thoại',
+    title: text.title,
     severity: 'low',
     passed,
-    expected: 'Một dải nhiệt độ duy nhất cho kho máy lạnh.',
+    expected: text.expected,
     observed: passed
-      ? `Nhất quán: ${[...ranges].join(', ') || 'không nêu'}.`
-      : `${ranges.size} dải khác nhau trong cùng một hội thoại: ${[...ranges].join(' vs ')}.`,
-    impact:
-      'Chi tiết nhỏ nhưng khách lưu rượu, nhạc cụ hay đồ điện tử sẽ đọc kỹ con số này; hai câu trả lời lệch nhau làm giảm độ tin cậy của mọi con số còn lại.',
+      ? text.observedPass([...ranges].join(', ') || copy.noneStated)
+      : text.observedFail(ranges.size, [...ranges].join(' vs ')),
+    impact: text.impact,
   }
 }
 
 /** Every question the customer asks gets an answer. */
-function checkNoDroppedQuestion(transcript: Transcript): CheckResult {
+function checkNoDroppedQuestion(transcript: Transcript, { copy }: Format): CheckResult {
   const dropped = transcript.turns.filter(
     (turn, index) => turn.role === 'user' && transcript.turns[index + 1]?.role === 'user',
   )
   const passed = dropped.length === 0
+  const text = copy.droppedQuestion
 
   return {
     id: 'no-dropped-question',
-    title: 'Không bỏ sót câu hỏi khi khách gửi liên tiếp',
+    title: text.title,
     severity: 'high',
     passed,
-    expected: 'Mỗi lượt hỏi của khách đều được trả lời.',
+    expected: text.expected,
     observed: passed
-      ? 'Không có câu hỏi nào bị bỏ sót.'
-      : `${dropped.length} câu bị bỏ qua hoàn toàn: ${dropped.map((turn) => `"${turn.text}"`).join(', ')}.`,
-    impact:
-      'Hỏi giá tất cả chi nhánh là tín hiệu mua hàng rõ ràng nhất trong cả hội thoại. Trợ lý trả lời câu sau và không bao giờ quay lại câu trước — lead đi thẳng vào khoảng trống.',
+      ? text.observedPass
+      : text.observedFail(dropped.length, dropped.map((turn) => `"${turn.text}"`).join(', ')),
+    impact: text.impact,
   }
 }
 
 /** Out-of-scope requests must be declined, not invented. */
-function checkOutOfScopeDeclined(transcript: Transcript): CheckResult {
+function checkOutOfScopeDeclined(transcript: Transcript, { copy }: Format): CheckResult {
   const exchange = answerTo(transcript, (text) => /ô tô|xe hơi|\bcar\b/i.test(text))
   const answer = exchange?.answer?.text ?? ''
   const declined = /chưa hỗ trợ|không hỗ trợ|not support|do not offer/i.test(answer)
   const quotedPrice = parseAmounts(answer).length > 0
+  const text = copy.outOfScope
 
   return {
     id: 'out-of-scope-declined',
-    title: 'Dịch vụ không có thì từ chối, không bịa',
+    title: text.title,
     severity: 'medium',
     passed: declined && !quotedPrice,
-    expected: 'Lưu trữ ô tô không nằm trong danh mục dịch vụ đã công bố.',
-    observed: declined
-      ? 'Từ chối đúng, không báo giá, và gợi ý tiếp phương án thay thế.'
-      : 'Không từ chối rõ ràng.',
-    impact: 'Trường hợp này trợ lý xử lý tốt — giữ nguyên hành vi này khi sửa các lỗi còn lại.',
+    expected: text.expected,
+    observed: declined ? text.observedPass : text.observedFail,
+    impact: text.impact,
   }
 }
 
-export function runChecks(transcript: Transcript): CheckResult[] {
+/** `locale` only changes the report wording; which checks pass never depends on it. */
+export function runChecks(transcript: Transcript, locale: Locale = 'vi'): CheckResult[] {
+  const format = formatFor(locale)
   return [
-    checkAdvertisedFloor(transcript),
-    checkNoDroppedQuestion(transcript),
-    checkProtectionCapsDisclosed(transcript),
-    checkCoverageClaimBacked(transcript),
-    checkLuggageRateDisclosed(transcript),
-    checkSpecConsistency(transcript),
-    checkOutOfScopeDeclined(transcript),
+    checkAdvertisedFloor(transcript, format),
+    checkNoDroppedQuestion(transcript, format),
+    checkProtectionCapsDisclosed(transcript, format),
+    checkCoverageClaimBacked(transcript, format),
+    checkLuggageRateDisclosed(transcript, format),
+    checkSpecConsistency(transcript, format),
+    checkOutOfScopeDeclined(transcript, format),
   ]
 }
