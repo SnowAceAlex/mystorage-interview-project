@@ -29,7 +29,12 @@ npm run build && npm start  # production build, single port
 
 `PROVIDER=mock npm run eval` runs the whole pipeline without a real API key — useful for
 checking the wiring, never for a real score (every mock answer is labelled `[MOCK-...]`).
-`npm run models` lists the Gemini models your key can access, for debugging `GEMINI_MODEL`.
+`npm run models` lists the models your key can access, for debugging `GEMINI_MODEL`/`GROQ_MODEL`.
+
+`PROVIDER=gemini|groq|mock` (default `gemini`). Gemini's free tier is heavily rate-limited (as
+low as 5 requests/minute and 20/day on some keys), which can block a full 15-question run;
+`PROVIDER=groq` (set `GROQ_API_KEY`, get one free at [console.groq.com](https://console.groq.com))
+uses a much more generous free tier over the same `ask()` interface — no other code changes.
 `npm test` runs the unit tests for the prompt/grader/concurrency/testset logic.
 
 ## What's here

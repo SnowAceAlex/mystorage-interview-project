@@ -1,6 +1,7 @@
 /**
  * ask() is the one place this app talks to a model. PROVIDER selects the
- * backend; everything else in the app is provider-agnostic.
+ * backend (gemini | groq | mock); everything else in the app is
+ * provider-agnostic.
  */
 import './loadEnv'
 
@@ -8,6 +9,7 @@ export type AskFn = (systemPrompt: string, question: string) => Promise<string>
 
 const PROVIDER = process.env.PROVIDER ?? 'gemini'
 const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-2.0-flash'
+const GROQ_MODEL = process.env.GROQ_MODEL ?? 'llama-3.3-70b-versatile'
 
 const MOCK_WARNING = '⚠️  MOCK PROVIDER — not real results, wiring test only  ⚠️'
 
@@ -49,9 +51,48 @@ async function geminiAnswer(systemPrompt: string, question: string): Promise<str
   return text
 }
 
+/** Groq's chat completions API is OpenAI-compatible — no SDK needed here either. */
+async function groqAnswer(systemPrompt: string, question: string): Promise<string> {
+  const apiKey = process.env.GROQ_API_KEY
+  if (!apiKey) {
+    throw new Error('GROQ_API_KEY is not set. Copy .env.example to .env and add your key, or set PROVIDER=mock.')
+  }
+
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: question },
+      ],
+    }),
+  })
+
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`Groq API error ${response.status}: ${body}`)
+  }
+
+  const data = (await response.json()) as {
+    choices?: { message?: { content?: string } }[]
+  }
+  const text = data.choices?.[0]?.message?.content ?? ''
+  if (!text) throw new Error(`Groq returned no text. Raw response: ${JSON.stringify(data)}`)
+  return text
+}
+
 export function isMockProvider(): boolean {
   return PROVIDER === 'mock'
 }
 
 export const ask: AskFn =
-  PROVIDER === 'mock' ? async (systemPrompt, question) => mockAnswer(systemPrompt, question) : geminiAnswer
+  PROVIDER === 'mock'
+    ? async (systemPrompt, question) => mockAnswer(systemPrompt, question)
+    : PROVIDER === 'groq'
+      ? groqAnswer
+      : geminiAnswer
