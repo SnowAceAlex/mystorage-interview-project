@@ -15,12 +15,7 @@ export default function App() {
     <main className="shell">
       <header className="masthead">
         <span className="eyebrow">Audit prototype · stow.mystorage.vn</span>
-        <h1>Trợ lý nói số, nhưng số không lấy từ đâu cả</h1>
-        <p className="lede">
-          Bảy check chạy trên một hội thoại thật với trợ lý AI của MyStorage, và một cách sửa: mọi con
-          số trong câu trả lời đều đọc từ một nguồn dữ liệu duy nhất, thay vì được model viết lại mỗi
-          lượt.
-        </p>
+        <h1>Chat Prototype for problem resolve</h1>
         <div className="meta">
           <span>Hội thoại {AUDIT_TRANSCRIPT.capturedAt}</span>
           <span>Nguồn đối chiếu: {SOURCE.label}</span>

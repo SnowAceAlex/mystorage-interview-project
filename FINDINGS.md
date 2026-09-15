@@ -120,16 +120,21 @@ of highest purchase intent. On mobile the link is also a context switch out of t
 
 ---
 
-## F6 — The same spec changes between two turns · **Low**
+## F6 — Four different climate specs across the company's own surfaces · Medium
 
-**What happened.** Air-conditioned storage was described as **24–28°C** in one answer and
-**25–28°C** in another, in the same conversation.
+What happened. The assistant described air-conditioned storage as 24–28°C with 55–65%
+humidity in Vietnamese, then as 25–28°C in English later in the same conversation. The
+company's own FAQ states 20–25°C with "humidity below 60%" in one place and 23–25°C in
+another. Four figures, no two matching.
 
-**Why it matters.** Small on its own, but this is the number a customer storing wine, instruments
-or electronics reads most carefully. Two different answers to the same question undermines
-confidence in every other figure in the chat.
+Why it matters. The humidity claim is a direct contradiction, not a rounding difference:
+the FAQ promises below 60%, the assistant promises a band that goes to 65%. A customer
+storing wine, instruments, documents or electronics is choosing on exactly this number.
+And because the website already disagrees with itself, there is nothing for the assistant
+to be correct against — the drift starts upstream of the bot.
 
-**Proposed fix.** Read specs from the same source of truth as prices.
+Proposed fix. One published spec per service, in the same source of truth the prices come
+from, and the assistant reads it rather than restating it.
 
 ---
 

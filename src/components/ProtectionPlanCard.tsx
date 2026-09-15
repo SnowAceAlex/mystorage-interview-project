@@ -36,7 +36,7 @@ export default function ProtectionPlanCard({ declaredValue }: Props) {
             <tr key={plan.tier} className={plan === recommended ? 'recommended' : undefined}>
               <th scope="row" style={{ fontFamily: 'var(--font-body)', textTransform: 'none', fontSize: '14px', color: 'var(--ink)' }}>
                 {plan.tier}
-                {plan === recommended && <span className="tag">đủ cho mức bạn khai</span>}
+                {plan === recommended}
               </th>
               <td>{plan.price}</td>
               <td className="figure">{formatVnd(plan.cap)}</td>
