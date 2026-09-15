@@ -28,7 +28,7 @@ export default function PricingFactCard({ service, quoted }: Props) {
       </header>
       <div className="delta">
         <div>
-          <span className="label">Website quảng cáo từ</span>
+          <span className="label">Giá công bố (llms.txt) từ</span>
           <span className="value">{formatVnd(advertised.floor)}</span>
         </div>
         <div>
@@ -45,8 +45,8 @@ export default function PricingFactCard({ service, quoted }: Props) {
       </div>
       <footer>
         {drifted
-          ? `Chênh ${formatVnd(gap)}/tháng so với mức "từ" đang chạy trên trang dịch vụ. Cần chốt lại: hoặc cập nhật giá sàn trên website, hoặc trợ lý phải nêu rõ gói nào mới có mức ${formatVnd(advertised.floor)}.`
-          : 'Giá trong chat khớp với giá sàn đang quảng cáo.'}
+          ? `Chênh ${formatVnd(gap)}/tháng so với mức "từ" mà ${SOURCE.label} công bố. Cần chốt lại: hoặc cập nhật lại giá sàn, hoặc trợ lý phải nêu rõ gói nào mới có mức ${formatVnd(advertised.floor)}.`
+          : `Giá trong chat khớp với giá sàn theo ${SOURCE.label}.`}
       </footer>
     </div>
   )

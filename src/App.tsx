@@ -31,7 +31,8 @@ export default function App() {
       <div className="notice">
         <span>
           Prototype độc lập cho bài test tuyển dụng, không phải sản phẩm chính thức của MyStorage. Dữ
-          liệu đối chiếu lấy từ trang công khai của công ty, ngày {SOURCE.verifiedAt}.
+          liệu đối chiếu lấy từ {SOURCE.label} — trang mô tả công khai, có cấu trúc máy đọc được của
+          công ty, xác minh ngày {SOURCE.verifiedAt}.
         </span>
       </div>
 
@@ -79,7 +80,7 @@ export default function App() {
             <div className="thread">
               <Bubble role="user">khoảng 20 triệu VND</Bubble>
               <Bubble role="assistant">
-                <p>Dạ với giá trị khai báo 20 triệu, gói Silver là mức thấp nhất phủ được ạ:</p>
+                <p>Dạ với giá trị tài sản khoảng 20 triệu, gói Silver là mức bảo hiểm phù hợp:</p>
               </Bubble>
               <ProtectionPlanCard declaredValue={20_000_000} />
             </div>
@@ -90,7 +91,7 @@ export default function App() {
       <section className="section">
         <div className="section-head">
           <span className="eyebrow">Sửa lỗi 2</span>
-          <h2>Giá: trang web nói "từ 559.000", chat bắt đầu từ 779.000</h2>
+          <h2>Giá: llms.txt công bố "từ 559.000", chat bắt đầu từ 779.000</h2>
         </div>
         <div className="compare">
           <div>
@@ -103,7 +104,7 @@ export default function App() {
                   máy lạnh 1.028.000 VNĐ/tháng (hoặc 1m³ máy lạnh chỉ 779.000 VNĐ/tháng).
                 </p>
                 <p className="flag">
-                  Không có mức nào chạm tới giá "từ 559.000 VNĐ/tháng" mà trang dịch vụ đang quảng cáo,
+                  Không có mức nào chạm tới giá "từ 559.000 VNĐ/tháng" mà llms.txt công bố,
                   và không câu nào giải thích vì sao.
                 </p>
               </Bubble>
