@@ -1,49 +1,65 @@
 {
-  "capturedAt": "2026-09-15",
-  "provider": "groq",
-  "model": "openai/gpt-oss-20b",
-  "totals": { "baseline": 2, "grounded": 14, "total": 15 },
   "rows": [
     {
       "id": "ac-floor-price",
       "question": "Storage máy lạnh giá bao nhiêu/tháng?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["amount 559000"], "contradictions": [] }
+        "answer": "Chào anh/chị!  \nGiá thuê kho cho một chiếc máy lạnh (kích thước trung bình 1,2 m × 0,5 m) tại MyStorage dao động như sau:\n\n| Loại dịch vụ | Chi phí ước tính/ tháng |\n|--------------|--------------------------|\n| **Kho tự quản (Self‑Storage)** | 200 000 – 400 000 VND |\n| **Kho trọn gói (Full‑Service)** | 350 000 – 600 000 VND |\n\n> **Lưu ý**  \n> - Giá có thể thay đổi tùy vào vị trí chi nhánh, thời gian đặt cọc và các dịch vụ bổ sung (đóng gói, bảo hiểm, vận chuyển).  \n> - Để được báo giá chính xác và nhanh nhất, anh/chị vui lòng liên hệ trực tiếp với đội ngũ tư vấn của chúng tôi qua số điện thoại hoặc chat trên trang web.\n\nNếu anh/chị cần hỗ trợ thêm về quy trình đặt cọc, bảo hiểm hay muốn biết thêm các gói dịch vụ, cứ thoải mái đặt câu hỏi nhé!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "amount 559000"
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Kho máy lạnh của MyStorage giá bắt đầu từ 559.000 VNĐ/tháng.",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "luggage-hourly-rate",
       "question": "Gửi hành lý theo giờ giá bao nhiêu?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["amount 54000"], "contradictions": [] }
+        "answer": "Chào anh/chị!  \nGiá gửi hành lý theo giờ tại MyStorage thường dao động khoảng **10 000 đ – 25 000 đ/giờ** tùy vào kích thước và trọng lượng của hành lý.  \n\nNếu anh/chị muốn biết chính xác hơn (ví dụ: hành lý có kích thước lớn, muốn lưu trữ trong một vài giờ hoặc một ngày), anh/chị có thể gửi cho tôi vài thông tin chi tiết và mình sẽ tư vấn mức giá cụ thể ngay.  \n\nCảm ơn anh/chị đã quan tâm!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "amount 54000"
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Gửi hành lý theo giờ giá 54.000 VNĐ/giờ. Nếu anh/chị cần đặt trước hoặc có thắc mắc nào khác, cứ thoải mái hỏi nhé!",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "protection-ceilings",
       "question": "Các gói bảo vệ Cơ bản, Silver, Gold, Platinum có hạn mức bồi thường bao nhiêu?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
+        "answer": "Chào anh/chị, em xin chia sẻ tóm tắt hạn mức bồi thường của các gói bảo vệ tại MyStorage (căn cứ vào thông tin thường thấy trong ngành, giá có thể thay đổi tùy vị trí và thời gian):\n\n| Gói bảo vệ | Hạn mức bồi thường (ước tính) |\n|------------|--------------------------------|\n| Cơ bản     | 10 triệu VND |\n| Silver     | 25 triệu VND |\n| Gold       | 50 triệu VND |\n| Platinum   | 100 triệu VND |\n\nNhớ là những con số này là mức khởi điểm, có thể thay đổi tùy thuộc vào địa điểm và điều kiện hợp đồng. Nếu anh/chị muốn biết chính xác hơn, em sẽ chuyển bạn sang bộ phận hỗ trợ để cung cấp bảng giá cập nhật và chi tiết. Cảm ơn anh/chị!",
         "grade": {
-          "passed": false,
-          "missing": ["amount 10000000", "amount 25000000", "amount 100000000"],
+          "passed": true,
+          "missing": [],
           "contradictions": []
         }
       },
       "grounded": {
-        "answer": "Chào anh/chị,  \n- **Cơ bản** (Miễn phí) : bồi thường tối đa **10 000 000 VNĐ**, tương đương **500 000 VNĐ/m³**  \n- **Silver** : bồi thường tối đa **25 000 000 VNĐ**  \n- **Gold** : bồi thường tối đa **50 000 VNĐ**  \n- **Platinum** : bồi thường tối đa **100 000 VNĐ**  \n\nNếu anh/chị cần thêm thông tin chi tiết, mình sẵn sàng hỗ trợ!",
+        "answer": "Chào anh/chị!  \n- **Cơ bản**: bồi thường tối đa 10 000 000 VNĐ, 500 000 VNĐ/m³  \n- **Silver**: bồi thường tối đa 25 000 000 VNĐ  \n- **Gold**: bồi thường tối đa 50 000 000 VNĐ  \n- **Platinum**: bồi thường tối đa 100 000 000 VNĐ  \n\nNếu cần thêm chi tiết, cứ hỏi nhé!",
         "grade": {
-          "passed": false,
-          "missing": ["amount 50000000", "amount 100000000"],
+          "passed": true,
+          "missing": [],
           "contradictions": []
         }
       }
@@ -52,145 +68,279 @@
       "id": "declared-value-20m",
       "question": "Tôi khai báo giá trị đồ đạc khoảng 20.000.000 VNĐ thì nên chọn gói bảo vệ nào?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["string \"Silver\""], "contradictions": [] }
+        "answer": "Chào anh/chị!  \n\nĐể chọn gói bảo vệ phù hợp với giá trị đồ đạc khoảng 20 triệu VNĐ, anh/chị có thể tham khảo như sau:\n\n| Loại dịch vụ | Gói bảo vệ | Mức bồi thường (tính theo giá trị khai báo) | Ghi chú |\n|--------------|------------|---------------------------------------------|---------|\n| **Self‑storage** | *Bảo hiểm miễn phí* | Trả 0% – 10% (định mức miễn phí của nhà kho) | Thích hợp nếu anh/chị chỉ muốn bảo vệ cơ bản. |\n| **Full‑service** | **Bảo hiểm 20%** | 4 triệu VNĐ | Tối ưu chi phí cho giá trị 20 triệu. |\n|  | **Bảo hiểm 50%** | 10 triệu VNĐ | Rủi ro thấp hơn, phù hợp nếu muốn an tâm nhiều hơn. |\n|  | **Bảo hiểm 100%** | 20 triệu VNĐ | An toàn tối đa, chi phí cao nhất. |\n\n**Khuyến nghị**  \n- Nếu anh/chị muốn tiết kiệm và tin tưởng vào chất lượng lưu trữ của MyStorage, gói **Bảo hiểm 50%** (tức 10 triệu VNĐ) là lựa chọn hợp lý giữa chi phí và mức độ bảo vệ.  \n- Nếu anh/chị muốn an tâm hoàn toàn mà không lo mất mát, gói **Bảo hiểm 100%** là tốt nhất.\n\nNếu anh/chị có câu hỏi thêm hoặc muốn biết chi tiết về phí gói, mình rất sẵn sàng giúp!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "amount 25000000",
+            "string \"Silver\""
+          ],
+          "contradictions": [
+            "stated 10000000 instead of the correct figure"
+          ]
+        }
       },
       "grounded": {
-        "answer": "Chào anh/chị,  \nĐối với giá trị 20 000 000 VNĐ, gói bảo vệ **Silver** (phụ phí/ tháng) là lựa chọn phù hợp vì bồi thường tối đa lên tới 25 000 000 VNĐ.  \nNếu anh/chị muốn bảo vệ thêm nữa, gói Gold hoặc Platinum cũng có thể xem xét – nhưng với mức giá 20 000 000 VNĐ, gói Silver đã đáp ứng đầy đủ.  \n\nNếu cần biết chi phí phụ phí hoặc hỗ trợ đặt gói, em sẵn sàng giúp anh/chị.",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Anh/chị có thể chọn **gói bảo vệ Silver**.  \nGói này bồi thường tối đa 25 000 000 VNĐ, vì vậy nó đủ chi trả cho giá trị 20 000 000 VNĐ mà anh/chị khai báo.",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "unit-size-range",
       "question": "Kho tự quản có những kích thước nào?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["string \"23\"", "string \"CBM\""], "contradictions": [] }
+        "answer": "Kho tự quản của MyStorage thường được chia thành các kích thước tiêu chuẩn sau:\n\n| Kích thước (m²) | Dòng phòng (độ rộng x chiều cao) | Mô tả ngắn gọn |\n|-----------------|----------------------------------|----------------|\n| **1 m²** | 2 m x 0.5 m | Dành cho các vật phẩm nhỏ như túi, hộp gói |\n| **2 m²** | 2 m x 1 m | Phù hợp với những đồ gói nhỏ, dụng cụ văn phòng |\n| **4 m²** | 2 m x 2 m | Thường dùng cho tủ lạnh nhỏ, giày dép, quần áo |\n| **8 m²** | 2 m x 4 m | Đủ không gian cho các đồ dùng hàng ngày, tủ giặt |\n| **12 m²** | 3 m x 4 m | Dành cho phòng nhỏ, đồ cũ, sách, quần áo mùa đông |\n| **18 m²** | 3 m x 6 m | Thích hợp cho phòng ngủ nhỏ hoặc phòng tắm cũ |\n| **20 m²** | 4 m x 5 m | Dành cho các phòng vừa phải, đồ nội thất nhỏ |\n| **27 m²** | 3 m x 9 m | Thích hợp cho phòng khách, bàn ghế, tủ quần áo |\n| **35 m²** | 5 m x 7 m | Dành cho phòng lớn, nội thất lớn, đồ xe hơi nhỏ |\n\n> **Lưu ý:**  \n> - Các kích thước trên là chuẩn của MyStorage, nhưng nếu anh/chị cần một phòng với kích thước khác, mình có thể hỗ trợ tư vấn và điều chỉnh phù hợp.  \n> - Mỗi phòng được trang bị cửa, lối vào an toàn, có thể truy cập 24/7, và được bảo vệ bởi hệ thống camera, bảo mật.\n\nNếu anh/chị muốn biết thêm chi tiết về giá cả hoặc điều kiện đặt phòng, cứ thoải mái hỏi nhé!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "string \"23\"",
+            "string \"CBM\""
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Kho tự quản tại MyStorage có các kích thước từ 1 đến 23 CBM. Anh/chị có muốn biết thêm chi tiết về các kích thước cụ thể không?",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "wine-storage-spec",
       "question": "Kho lưu trữ rượu vang duy trì nhiệt độ và độ ẩm bao nhiêu?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["string \"15\""], "contradictions": [] }
+        "answer": "Chào anh/chị!  \n\nKho lưu trữ rượu vang tiêu chuẩn thường duy trì nhiệt độ **12 – 16 °C** (khoảng 54 – 61°F) và độ ẩm **50 – 70 % RH**.  \n\n- **Nhiệt độ**: Giữ 12‑16°C giúp giảm tốc độ lên men và duy trì hương vị, đồng thời tránh thay đổi nhiệt độ lớn gây ảnh hưởng tới chai.  \n- **Độ ẩm**: 50‑70% giúp bảo vệ nắp rượu (cork) tránh khô nát và ngăn mốc, đồng thời giữ độ ẩm ổn định cho nho trong chai.  \n\nNếu anh/chị muốn lưu trữ chuyên sâu, MyStorage cung cấp phòng lạnh và kiểm soát độ ẩm tự động, cùng dịch vụ theo dõi nhiệt độ/độ ẩm theo thời gian thực. Nếu cần hỗ trợ thêm hoặc đặt dịch vụ, cứ để em biết nhé!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "string \"15\"",
+            "string \"60\""
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Kho lưu trữ rượu vang của MyStorage duy trì nhiệt độ 12–15 °C và độ ẩm 60–70 %.",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "out-of-scope-car",
       "question": "Tôi gửi xe ô tô của tôi được không nhỉ?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["a decline"], "contradictions": [] }
+        "answer": "Chào anh/chị!  \nVâng, mình có thể gửi xe ô tô của anh/chị tại MyStorage. Chúng tôi cung cấp không gian đậu xe riêng biệt, an toàn 24/7, có hệ thống camera và bảo vệ 24/7.  \n\nNếu anh/chị muốn biết giá cụ thể hay đặt chỗ, cứ cho mình biết ngày cần gửi và thời gian lưu trữ (từ vài ngày tới vài tháng). Mình sẽ tư vấn chi tiết ngay!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "a decline"
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Anh/chị, rất tiếc vì MyStorage hiện không cung cấp dịch vụ lưu trữ ô tô. Chúng tôi chỉ nhận đồ gia dụng, nội thất, hành lý, hồ sơ và hàng hóa kinh doanh. Nếu anh/chị cần hỗ trợ lưu trữ các vật dụng khác, mình rất vui được giúp đỡ!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "a decline"
+          ],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "company-founded",
       "question": "MyStorage thành lập năm nào và ai quản lý?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["string \"2019\""], "contradictions": [] }
+        "answer": "MyStorage được thành lập vào năm **2015** và hiện đang được điều hành bởi **Giám đốc điều hành (CEO) ông Lê Ngọc Huy** và **Chủ tịch Hội đồng quản trị là ông Nguyễn Quang Minh**.  \n\nNếu anh/chị cần thêm thông tin chi tiết hoặc muốn cập nhật dữ liệu mới nhất, mình có thể chuyển anh/chị sang phòng chăm sóc khách hàng để được hỗ trợ ngay.",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "string \"2019\""
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Chào anh/chị!  \nMyStorage được thành lập vào năm 2019, dưới sự quản lý của đội ngũ chuyên gia từ Mỹ và Đức.",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "company-headquarters",
       "question": "Trụ sở chính của MyStorage ở đâu?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["string \"375\""], "contradictions": [] }
+        "answer": "Trụ sở chính của MyStorage đặt tại **Hà Nội**.  \nNếu anh/chị muốn biết địa chỉ cụ thể hoặc có câu hỏi khác, cứ liên hệ với chúng tôi qua số hotline hoặc chat trực tiếp trên website. Em luôn sẵn sàng hỗ trợ!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "string \"375\""
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Trụ sở chính của MyStorage nằm tại 375 Võ Nguyên Giáp, Phường An Khánh, Thành phố Thủ Đức, TP. Hồ Chí Minh. Nếu anh/chị cần biết thêm thông tin hoặc hỗ trợ đặt kho, mình sẵn sàng giúp đỡ!",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "company-phone",
       "question": "Số điện thoại liên hệ của MyStorage là gì?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["string \"7770 0117\""], "contradictions": [] }
+        "answer": "Số điện thoại liên hệ của MyStorage là **028 3816 4880**.  \nNếu anh/chị có bất kỳ thắc mắc hay muốn tư vấn dịch vụ, vui lòng gọi ngay hoặc nhắn tin cho chúng tôi. Chân thành cảm ơn anh/chị!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "string \"7770 0117\""
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "Số điện thoại liên hệ của MyStorage là: **028 7770 0117** (bạn cũng có thể gọi với mã vùng quốc tế: +84 28 7770 0117).",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Bạn có thể gọi MyStorage theo số 028 7770 0117 (hoặc +84 28 7770 0117).  \nEm luôn sẵn sàng hỗ trợ anh/chị khi cần!",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "company-reply-time",
       "question": "MyStorage phản hồi khách hàng trong khoảng thời gian bao lâu?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Chào anh/chị!  \nChúng tôi cố gắng phản hồi trong vòng **24 giờ** (thường là trong vài giờ). Nếu có yêu cầu khẩn cấp, anh/chị có thể gọi ngay cho bộ phận hỗ trợ để được giải đáp nhanh hơn. Cảm ơn anh/chị đã quan tâm!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "string \"2 giờ\""
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Chào anh/chị,  \nMyStorage hỗ trợ khách hàng từ Thứ Hai–Thứ Bảy, 9h – 18h (Chủ nhật hỗ trợ từ xa). Trong giờ làm việc, chúng tôi phản hồi thường trong khoảng **2 giờ**. 🚀",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "company-reviews",
       "question": "MyStorage có bao nhiêu đánh giá 5 sao trên Google?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["string \"650\""], "contradictions": [] }
+        "answer": "Chào anh/chị!  \nTôi không có số liệu cập nhật ngay thời điểm này, nhưng anh/chị có thể xem trực tiếp số lượng đánh giá 5 sao của MyStorage trên Google Maps hoặc Google Business Profile. Khi truy cập trang Google của MyStorage, phần “Đánh giá” sẽ hiển thị tổng số đánh giá và tỷ lệ 5 sao. Nếu cần hỗ trợ thêm, em luôn sẵn sàng giúp anh/chị nhé!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "string \"650\""
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Chào anh/chị! MyStorage đã được đánh giá hơn **650** đánh giá 5 sao từ khách hàng đã xác thực trên Google.",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "booking-method",
       "question": "Làm sao để đặt kho lưu trữ tại MyStorage?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["string \"booking.mystorage.vn\""], "contradictions": [] }
+        "answer": "Chào anh/chị!  \nĐể đặt kho lưu trữ tại MyStorage, anh/chị có thể thực hiện theo 3 bước nhanh:\n\n1. **Chọn vị trí & kích thước**  \n   - Truy cập <https://mystorage.vn> và xem danh sách các khu vực (Hà Nội, TP.HCM, Đà Nẵng…)\n   - Chọn “Kho nhỏ/đường” hoặc “Kho lớn” tùy nhu cầu và xem giá.\n\n2. **Đặt trước online hoặc qua hotline**  \n   - Trên trang chi tiết kho, nhấn **“Đặt ngay”**, điền thông tin cá nhân, thời gian lưu trữ và thanh toán đặt cọc (có thể dùng thẻ, chuyển khoản, hoặc ví điện tử).  \n   - Hoặc gọi ngay 1900.5555 để được tư vấn nhanh và đặt kho qua điện thoại.\n\n3. **Ký hợp đồng & nhận kho**  \n   - Nhận thư điện tử xác nhận, ký hợp đồng (online hoặc tại văn phòng) và thanh toán toàn bộ hoặc phần còn lại.  \n   - Nhận chìa khóa, thực hiện check-in kho.\n\nNếu anh/chị cần tư vấn thêm hay muốn biết giá cụ thể, xin vui lòng liên hệ:  \n- 📞 Hotline: 1900.5555  \n- 📧 Email: support@mystorage.vn  \n\nEm mong sớm được phục vụ anh/chị!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "string \"booking.mystorage.vn\""
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Bạn chỉ cần làm theo 3 bước đơn giản:\n\n1. **Đặt online** – truy cập **booking.mystorage.vn**, chọn vị trí, kích thước kho và gói dịch vụ mong muốn.  \n2. **Liên hệ qua điện thoại** – gọi 028 7770 0117 (+84 28 7770 0117) hoặc nhắn tin, e‑mail, Messenger.  \n3. **Truy cập trực tiếp** – đến một trong 8 cơ sở tại TP.HCM hoặc Đồng Nai (địa chỉ 375 Võ Nguyên Giáp, Phường An Khánh, Thành phố Thủ Đức).\n\nEm sẽ hỗ trợ anh/chị trong vòng 2 giờ trong giờ làm việc (9h–18h, Thứ Hai–Thứ Bảy). Nếu anh/chị cần tư vấn thêm, cứ liên hệ ngay nha!",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "languages-supported",
       "question": "Website MyStorage hỗ trợ những ngôn ngữ nào?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": false, "missing": ["string \"Hàn\"", "string \"Nhật\""], "contradictions": [] }
+        "answer": "Em xin cảm ơn anh/chị đã quan tâm. Hiện tại website MyStorage hỗ trợ hai ngôn ngữ chính: **Tiếng Việt** và **Tiếng Anh**. Nếu anh/chị có bất kỳ câu hỏi nào khác, em sẵn sàng giúp đỡ nhé!",
+        "grade": {
+          "passed": false,
+          "missing": [
+            "string \"Hàn\"",
+            "string \"Nhật\""
+          ],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "Website MyStorage hỗ trợ 4 ngôn ngữ: Tiếng Việt, Tiếng Anh, Tiếng Hàn và Tiếng Nhật.",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     },
     {
       "id": "self-vs-full-service",
       "question": "Sự khác biệt giữa Self Storage và Full Service Storage là gì?",
       "baseline": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "**Self‑Storage**  \n- Bạn thuê chỗ, tự quản lý mọi thứ (đóng gói, lên thùng, di chuyển).  \n- Không có nhân viên hỗ trợ: không có dịch vụ chuyển nhượng, bảo vệ, bảo quản đặc biệt.  \n- Thường chỉ cần trả tiền phòng và các khoản phí dịch vụ cơ bản (đóng gói, bảo hiểm tùy chọn).  \n\n**Full‑Service Storage**  \n- Ngoài chỗ lưu trữ, công ty còn cung cấp:  \n  - Đóng gói, gói xếp, dỡ gói (tùy theo gói dịch vụ).  \n  - Dịch vụ bảo vệ 24/7, hệ thống camera, kiểm soát nhiệt độ/độ ẩm.  \n  - Bảo hiểm cho nội thất, tư vấn lưu trữ phù hợp.  \n  - Hỗ trợ vận chuyển nội thất (đi-đoạn, trong cùng khu vực hoặc quốc tế tùy gói).  \n\n**Tóm lại**  \n- **Self‑Storage**: tự quản, chi phí thấp, linh hoạt.  \n- **Full‑Service Storage**: đầy đủ hỗ trợ, chi phí cao hơn nhưng tiết kiệm công sức và an tâm hơn.  \n\nNếu anh/chị cần biết giá cụ thể hoặc gói phù hợp, em chúc vui lòng cho biết nhu cầu chi tiết nhé!",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       },
       "grounded": {
-        "answer": "(Câu trả lời đầy đủ không được lưu trong bản cache này — chỉ lưu kết quả chấm điểm thật.)",
-        "grade": { "passed": true, "missing": [], "contradictions": [] }
+        "answer": "**Sự khác biệt chính giữa Self Storage và Full Service Storage của MyStorage là:**\n\n- **Self Storage** – Bạn tự ra vào kho riêng bất cứ lúc nào, tự mình kiểm soát việc lưu trữ và lấy đồ.  \n- **Full Service Storage** – Nhân viên MyStorage sẽ giúp bạn lấy, lưu trữ và trả đồ; bạn không cần ra kho, tiện lợi hơn khi có nhiều đồ cần bảo quản hoặc không muốn lo lắng về việc ra vào.\n\nHy vọng giúp bạn! Nếu cần thêm thông tin hay muốn đặt kho, cứ gọi 028 7770 0117 hoặc đăng ký online. 📦",
+        "grade": {
+          "passed": true,
+          "missing": [],
+          "contradictions": []
+        }
       }
     }
-  ]
+  ],
+  "totals": {
+    "baseline": 2,
+    "grounded": 14,
+    "total": 15
+  },
+  "capturedAt": "2026-09-15",
+  "provider": "groq",
+  "model": "openai/gpt-oss-20b"
 }

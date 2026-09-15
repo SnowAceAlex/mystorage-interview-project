@@ -40,9 +40,9 @@ export default function EvalRunner() {
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
       setLiveError(
-        `Không gọi được server API (${message}). Đây có thể là bản deploy tĩnh không có backend sống — ` +
-          `kết quả bên dưới vẫn là lần chạy thật gần nhất đã lưu sẵn, không phải số bịa. Chạy ` +
-          `npm run dev ở máy local (có API key) để tự chạy trực tiếp.`,
+        `Không gọi được server API (${message}). Đây có thể là bản deploy tĩnh ` +
+        `kết quả bên dưới vẫn là kết quả thật từ lần chạy gần nhất đã lưu sẵn, không phải số liệu giả. Chạy ` +
+        `npm run dev ở máy local (có API key) để tự chạy trực tiếp.`,
       )
     } finally {
       setLoading(false)
@@ -77,7 +77,7 @@ export default function EvalRunner() {
         <div className="notice">
           <span>
             Kết quả chạy thật gần nhất, lưu sẵn ngày {CACHED.capturedAt} qua {CACHED.provider}/
-            {CACHED.model} — không phải số bịa, chỉ không phải vừa chạy ngay lúc này. Bấm nút trên để
+            {CACHED.model} — không phải số liệu giả, chỉ không phải vừa chạy ngay lúc này. Bấm nút trên để
             thử chạy trực tiếp (cần server + API key ở local).
           </span>
         </div>
@@ -85,7 +85,7 @@ export default function EvalRunner() {
 
       {!result.mock && !usingCache && (
         <div className="notice">
-          <span>Điểm số dưới đây vừa chạy trực tiếp qua API sống, không phải số bịa.</span>
+          <span>Điểm số dưới đây vừa chạy trực tiếp qua API thật, không phải số liệu giả.</span>
         </div>
       )}
 
