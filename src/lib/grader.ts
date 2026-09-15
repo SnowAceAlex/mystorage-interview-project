@@ -9,7 +9,7 @@
  * makes over the transcript.
  */
 
-import { parseAmounts, statesAmount } from './factCheck'
+import { normalizeSpaces, parseAmounts, statesAmount } from './factCheck'
 import { ADVERTISED_PRICES, PROTECTION_PLANS } from '../data/groundTruth'
 
 export type AmountKind = 'price' | 'ceiling'
@@ -48,8 +48,9 @@ export function grade(answer: string, expectation: Expectation): GradeResult {
     if (!statesAmount(answer, amount)) missing.push(`amount ${amount}`)
   }
 
+  const normalizedAnswer = normalizeSpaces(answer).toLowerCase()
   for (const needle of expectation.requiredStrings ?? []) {
-    if (!answer.toLowerCase().includes(needle.toLowerCase())) missing.push(`string "${needle}"`)
+    if (!normalizedAnswer.includes(needle.toLowerCase())) missing.push(`string "${needle}"`)
   }
 
   if (expectation.amountKind) {

@@ -84,3 +84,23 @@ test('does not flag a distractor as a contradiction when the required amount was
   assert.deepEqual(result.missing, [])
   assert.deepEqual(result.contradictions, [])
 })
+
+test('recognizes a grouped amount that uses a narrow no-break space (U+202F), as some models do', () => {
+  const result = grade('Gói Silver bồi thường tối đa 25 000 000 VNĐ.', {
+    id: 'x',
+    question: 'q',
+    requiredAmounts: [25_000_000],
+  })
+  assert.equal(result.passed, true)
+  assert.deepEqual(result.missing, [])
+})
+
+test('recognizes a required string across a narrow no-break space (U+202F), as some models use for grouping', () => {
+  const result = grade('Số điện thoại là 028 7770 0117 ạ.', {
+    id: 'x',
+    question: 'q',
+    requiredStrings: ['7770 0117'],
+  })
+  assert.equal(result.passed, true)
+  assert.deepEqual(result.missing, [])
+})

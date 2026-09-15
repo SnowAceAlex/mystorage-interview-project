@@ -26,19 +26,30 @@ export type CheckResult = {
   impact: string
 }
 
-/** Amounts written as 1.634.000 VNĐ / 1,418,000 VND. */
-const GROUPED_AMOUNT = /(\d{1,3}(?:[.,]\d{3})+)\s*(?:VN[ĐD]|VND|đ)/gi
+/**
+ * Collapses Unicode space variants (non-breaking, narrow no-break, etc.) to a
+ * plain space. Different models format grouped numbers with different space
+ * characters (e.g. U+202F narrow no-break space) — without this, a correct
+ * answer fails to match purely because of which space character a model chose.
+ */
+export function normalizeSpaces(text: string): string {
+  return text.replace(/[  -   　]/g, ' ')
+}
+
+/** Amounts written as 1.634.000 VNĐ / 1,418,000 VND / 10 000 000 VNĐ (space-grouped). */
+const GROUPED_AMOUNT = /(\d{1,3}(?:[., ]\d{3})+)\s*(?:VN[ĐD]|VND|đ)/gi
 /** Amounts written as "20 triệu". */
 const MILLIONS_AMOUNT = /(\d+(?:[.,]\d+)?)\s*triệu/gi
 /** Temperature ranges such as 24–28°C. */
 const TEMP_RANGE = /(\d{1,2})\s*[–—-]\s*(\d{1,2})\s*°\s*C/g
 
 export function parseAmounts(text: string): number[] {
+  const normalized = normalizeSpaces(text)
   const amounts: number[] = []
-  for (const [, digits] of text.matchAll(GROUPED_AMOUNT)) {
-    amounts.push(Number(digits.replace(/[.,]/g, '')))
+  for (const [, digits] of normalized.matchAll(GROUPED_AMOUNT)) {
+    amounts.push(Number(digits.replace(/[., ]/g, '')))
   }
-  for (const [, digits] of text.matchAll(MILLIONS_AMOUNT)) {
+  for (const [, digits] of normalized.matchAll(MILLIONS_AMOUNT)) {
     amounts.push(Math.round(Number(digits.replace(',', '.')) * 1_000_000))
   }
   return amounts
